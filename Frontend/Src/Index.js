@@ -1,7 +1,11 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
+import ReactDOM from 'react-dom';
+import App from './App'; // Ensure App is correctly imported
+import './index.css'; // Ensure Tailwind CSS is included here
 
-const container = document.getElementById('root');
-const root = createRoot(container);  // Use React 18's createRoot
-root.render(<App />);
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

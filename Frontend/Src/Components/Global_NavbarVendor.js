@@ -1,0 +1,21 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+function Global_NavbarVendor() {
+    return (
+        <nav className="bg-gray-800 text-white p-4">
+            <div className="container mx-auto flex justify-between items-center">
+                <Link to="/" className="text-xl font-bold">Prozpkt</Link>
+                <div className="flex space-x-4">
+                    <Link to="/vendor-dashboard" className="hover:text-blue-400">Dashboard</Link>
+                    <Link to="/post-lead" className="hover:text-blue-400">Post Lead</Link>
+                    <Link to="/faq" className="hover:text-blue-400">FAQ</Link>
+                    <Link to="/contact" className="hover:text-blue-400">Contact</Link>
+                    <button className="hover:text-red-400" onClick={() => alert('Logging out...')}>Logout</button>
+                </div>
+            </div>
+        </nav>
+    );
+}
+
+export default Global_NavbarVendor;

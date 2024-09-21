@@ -1,7 +1,9 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './Src/Index.js',  // Ensure the correct case-sensitive path
+  entry: './Src/index.js',
   output: {
     path: path.resolve(__dirname, 'Dist'),
     filename: 'bundle.js',
@@ -9,27 +11,33 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,   // Handle JavaScript and JSX files
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',   // Transpile JS and JSX using Babel
-        },
+        use: 'babel-loader',
       },
       {
-        test: /\.css$/,  // For handling CSS files (Tailwind or other)
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+        ],
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].bundle.css',
+    }),
+    new HtmlWebpackPlugin({
+      template: './Public/index.html',
+    }),
+  ],
   resolve: {
-    extensions: ['.js', '.jsx'],  // Handle both .js and .jsx extensions
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'Public'),  // Updated to 'static' for Webpack 5
-    },
+    static: './Public',
     hot: true,
-    compress: true,
-    port: 8080,  // You can customize the port if necessary
   },
 };
