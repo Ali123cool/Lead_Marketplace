@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App'; // Ensure App is correctly imported
-import './index.css'; // Ensure Tailwind CSS is included here
+import ReactDOM from 'react-dom/client'; // Updated for React 18
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 
-ReactDOM.render(
-  <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </BrowserRouter>
 );

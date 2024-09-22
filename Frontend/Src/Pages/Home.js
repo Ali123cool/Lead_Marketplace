@@ -1,18 +1,23 @@
+// Src/Pages/Home.js
+
 import React from 'react';
-import HomePage_HeroSection from '../Components/HomePage_HeroSection';
-import HomePage_CallToAction from '../Components/HomePage_CallToAction';
-import HomePage_Features from '../Components/HomePage_Features';
-import HomePage_Testimonials from '../Components/HomePage_Testimonials';
+import Global_Navbar from '../Components/Global_Navbar';
+import Home_HeroSection from '../Components/Home_HeroSection';
+import Home_ExplainPlatformCard from '../Components/Home_ExplainPlatformCard';
+import Home_MissionCard from '../Components/Home_MissionCard';
 
-function HomePage() {
-    return (
-        <div>
-            <HomePage_HeroSection />
-            <HomePage_Features />
-            <HomePage_CallToAction />
-            
-        </div>
-    );
-}
+const Home = () => {
+  return (
+    <div className="relative min-h-screen bg-secondary">
+      
+      <Global_Navbar />
+      <div className="container mx-auto px-6">
+        <Home_HeroSection />
+        <Home_ExplainPlatformCard />
+        <Home_MissionCard />
+      </div>
+    </div>
+  );
+};
 
-export default HomePage;
+export default Home;

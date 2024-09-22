@@ -1,16 +1,16 @@
 import React from 'react';
 import Global_Navbar from '../Components/Global_Navbar';
 import Global_SectionTitle from '../Components/Global_SectionTitle';
-import RefundPolicy_Content from '../Components/RefundPolicy_Content';
+import TOS_TermsContent from '../Components/TOS_TermsContent';
 
-const RefundPolicy = () => {
+const TOS = () => {
   return (
     <div>
       <Global_Navbar />
-      <Global_SectionTitle title="Refund Policy" />
-      <RefundPolicy_Content />
+      <Global_SectionTitle title="Terms of Service" />
+      <TOS_TermsContent />
     </div>
   );
 };
 
-export default RefundPolicy;
+export default TOS;

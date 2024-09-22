@@ -39,5 +39,6 @@ module.exports = {
   devServer: {
     static: './Public',
     hot: true,
+    historyApiFallback: true, // Ensure client-side routing works
   },
 };
