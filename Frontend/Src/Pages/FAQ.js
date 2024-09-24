@@ -1,7 +1,6 @@
 // Src/Pages/FAQ.js
 
 import React, { useState } from 'react';
-import Global_Navbar from '../Components/Global_Navbar';
 import Global_SectionTitle from '../Components/Global_SectionTitle';
 import FAQ_FAQList from '../Components/FAQ_FAQList';
 import FAQ_SearchBar from '../Components/FAQ_SearchBar';
@@ -16,7 +15,6 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen bg-secondary">
-      <Global_Navbar />
       <div className="container mx-auto p-6">
         <Global_SectionTitle title="Frequently Asked Questions" />
         <FAQ_SearchBar onSearch={handleSearch} />

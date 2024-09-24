@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Registration_LinkToLogin = () => {
+const Login_LinkToResetPassword = () => {
   return (
     <div className="text-center mt-4">
       <p className="text-bodyText font-body">
-        Already have an account? 
-        <Link to="/login" className="text-button2 ml-2">
-          Log in here.
+        Forgot your password?
+        <Link to="/reset-password" className="text-button2 ml-2">
+          Reset Password.
         </Link>
       </p>
     </div>
   );
 };
 
-export default Registration_LinkToLogin;
+export default Login_LinkToResetPassword;

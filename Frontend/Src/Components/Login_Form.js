@@ -55,9 +55,6 @@ const Login_Form = ({ onSubmit }) => {
         </button>
       </div>
 
-      <div className="text-right">
-        <a href="/forgot-password" className="text-button2">Forgot Password?</a>
-      </div>
     </form>
   );
 };

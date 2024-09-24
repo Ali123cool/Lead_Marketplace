@@ -7,7 +7,7 @@ module.exports = {
         primary: '#282B32',        // Primary color
         secondary: '#252424',      // Secondary color
         button1: '#9C183D',        // Accent color (button1)
-        button2: '#01017C',        // Secondary button color
+        button2: '#9bbdff',        // Secondary button color
         bodyText: '#FFFFFF',       // Main body text color
         textSecondary: '#000000',  // Secondary text color
       },

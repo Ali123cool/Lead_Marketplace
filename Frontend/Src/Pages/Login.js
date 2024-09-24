@@ -1,36 +1,62 @@
-// Src/Pages/Login.js
-
 import React, { useState } from 'react';
-import Global_Navbar from '../Components/Global_Navbar';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient'; // Supabase client
 import Login_Form from '../Components/Login_Form';
-import Login_LinkToRegister from '../Components/Login_LinkToRegister';
 import Login_ErrorMessage from '../Components/Login_ErrorMessage';
-import Global_Footer from '../Components/Global_Footer';
+import Login_LinkToRegister from '../Components/Login_LinkToRegister';
+import Login_LinkToResendVerification from '../Components/Login_LinkToResendVerification';
+import Login_LinkToResetPassword from '../Components/Login_LinkToResetPassword';
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // For navigation after successful login
 
-  const handleLogin = (formData) => {
-    // Simulate login and error handling
-    if (formData.email === 'test@example.com' && formData.password === 'password') {
-      // Simulate successful login
-      setErrorMessage('');
-      console.log('Login successful!');
-    } else {
-      // Simulate login error
-      setErrorMessage('Invalid email or password. Please try again.');
+  const handleLogin = async (formData) => {
+    setErrorMessage('');
+    setLoading(true);
+
+    const { email, password } = formData;
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        // Check for specific errors like unverified email or wrong password
+        if (error.message === 'Invalid login credentials') {
+          setErrorMessage('Login failed: Incorrect password.');
+        } else if (error.message === 'Email not confirmed') {
+          setErrorMessage('Please verify your email before logging in.');
+        } else {
+          setErrorMessage('Login failed: ' + error.message);
+        }
+      } else if (data.user) {
+        // Redirect after successful login
+        navigate('/dashboard'); // Replace with actual dashboard route
+      }
+    } catch (error) {
+      setErrorMessage('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
-      <Global_Navbar />
-      <div className="container mx-auto px-6 py-12">
-        <Login_ErrorMessage message={errorMessage} />
+    <div className="min-h-screen bg-secondary flex items-center justify-center">
+      <div className="container max-w-md mx-auto p-6 bg-primary rounded-md shadow-md">
+        <h2 className="text-center text-2xl text-bodyText font-bold mb-6">Login</h2>
+
+        {/* Error message */}
+        {errorMessage && <Login_ErrorMessage message={errorMessage} />}
+
+        {/* Login form */}
         <Login_Form onSubmit={handleLogin} />
+
+        {/* Links */}
         <Login_LinkToRegister />
+        <Login_LinkToResendVerification />
+        <Login_LinkToResetPassword />
       </div>
-      <Global_Footer />
     </div>
   );
 };
