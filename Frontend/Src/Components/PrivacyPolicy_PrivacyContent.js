@@ -2,7 +2,7 @@ import React from 'react';
 
 const PrivacyPolicy_PrivacyContent = () => {
   return (
-    <div className="px-8 py-12 bg-secondary text-bodyText">
+    <div className="px-8 py-12 bg-privacy text-bodyText">
       <p className="mb-4">
         Welcome to Prozpkt! This privacy policy outlines how we collect, use, and protect your personal data.
       </p>

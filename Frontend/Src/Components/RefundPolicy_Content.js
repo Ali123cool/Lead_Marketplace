@@ -2,7 +2,7 @@ import React from 'react';
 
 const RefundPolicy_Content = () => {
   return (
-    <div className="px-8 py-12 bg-secondary text-bodyText">
+    <div className="px-8 py-12 bg-primary text-bodyText">
       <p className="mb-4">
         Welcome to Prozpkt! Here is our Refund Policy:
       </p>

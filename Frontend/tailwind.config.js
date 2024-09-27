@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         primary: '#282B32',        // Primary color
         secondary: '#252424',      // Secondary color
+        tertiary: '#06030F',      // Secondary color
         button1: '#9C183D',        // Accent color (button1)
         button2: '#9bbdff',        // Secondary button color
         bodyText: '#FFFFFF',       // Main body text color

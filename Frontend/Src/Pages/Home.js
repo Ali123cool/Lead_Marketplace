@@ -7,7 +7,7 @@ import Home_MissionCard from '../Components/Home_MissionCard';
 
 const Home = () => {
   return (
-    <div className="relative min-h-screen bg-secondary">
+    <div className="relative min-h-screen bg-primary">
       
       <div className="container mx-auto px-6">
         <Home_HeroSection />

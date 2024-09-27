@@ -14,7 +14,7 @@ const FAQ = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-primary">
       <div className="container mx-auto p-6">
         <Global_SectionTitle title="Frequently Asked Questions" />
         <FAQ_SearchBar onSearch={handleSearch} />

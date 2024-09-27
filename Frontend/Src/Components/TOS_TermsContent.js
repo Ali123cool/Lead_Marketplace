@@ -2,7 +2,7 @@ import React from 'react';
 
 const TOS_TermsContent = () => {
   return (
-    <div className="px-8 py-12 bg-secondary text-bodyText">
+    <div className="px-8 py-12 bg-primary text-bodyText">
       <p className="mb-4">
         Welcome to Prozpkt! These terms and conditions outline the rules and regulations for the use of Prozpkt's Website.
       </p>

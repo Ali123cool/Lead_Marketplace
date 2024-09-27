@@ -11,7 +11,12 @@ const ResendVerification = () => {
     setError('');
 
     try {
-      const { error } = await supabase.auth.resendConfirmationEmail(email);
+      // Resend confirmation email for signup
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email, // Pass in the email submitted
+
+      });
 
       if (error) {
         setError('Failed to resend verification email: ' + error.message);
@@ -24,7 +29,7 @@ const ResendVerification = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary flex items-center justify-center">
+    <div className="min-h-screen bg-primary flex items-center justify-center">
       <div className="container max-w-md mx-auto p-6 bg-primary rounded-md shadow-md">
         <h2 className="text-center text-2xl text-bodyText font-bold mb-6">Resend Verification</h2>
 
