@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 import countryList from 'react-select-country-list';
 
 const usStates = [
@@ -15,6 +16,9 @@ const usStates = [
 ];
 
 const VendorDashboard_Profile = () => {
+  
+  const navigate = useNavigate();
+
   const [vendorData, setVendorData] = useState({
     first_name: '',
     last_name: '',

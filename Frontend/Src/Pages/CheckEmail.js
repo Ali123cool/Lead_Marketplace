@@ -8,7 +8,7 @@ const CheckEmail = () => {
       <p className="mb-4">
         A confirmation email has been sent to your email address. Please verify your email before continuing.
       </p>
-      <Link to="/login" className="text-button1 hover:underline">
+      <Link to="/login" className="text-button2 hover:underline">
         Go to Login
       </Link>
     </div>

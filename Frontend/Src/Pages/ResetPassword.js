@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ResetPassword_Form from '../Components/ResetPassword_Form';
-import { supabase } from '../supabaseClient'; // Supabase client
+import { supabase } from '../supabaseClient';
 
 const ResetPassword = () => {
   const [message, setMessage] = useState('');
@@ -11,7 +11,10 @@ const ResetPassword = () => {
     setError('');
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      // Send the password reset email and redirect user to the correct URL
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password2`, // Redirect to ResetPassword2 page after email
+      });
 
       if (error) {
         setError('Failed to send reset password email: ' + error.message);
@@ -28,7 +31,7 @@ const ResetPassword = () => {
       <div className="container max-w-md mx-auto p-6 bg-primary rounded-md shadow-md">
         <h2 className="text-center text-2xl text-bodyText font-bold mb-6">Reset Password</h2>
 
-        {/* Message or error */}
+        {/* Display Message or Error */}
         {message && <p className="text-green-600 mb-4">{message}</p>}
         {error && <p className="text-red-600 mb-4">{error}</p>}
 

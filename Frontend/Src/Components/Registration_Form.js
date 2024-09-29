@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Registration_Form = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const Registration_Form = ({ onSubmit }) => {
   });
 
   const [errors, setErrors] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Toggle visibility for password
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false); // Toggle visibility for confirm password
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,10 +34,18 @@ const Registration_Form = ({ onSubmit }) => {
     onSubmit(formData);  // Pass the form data back to the parent component
   };
 
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-primary rounded-md">
       
-
       {/* Email Input */}
       <div className="mb-4">
         <label className="block text-white mb-2">Email</label>
@@ -48,29 +60,47 @@ const Registration_Form = ({ onSubmit }) => {
       </div>
 
       {/* Password Input */}
-      <div className="mb-4">
+      <div className="mb-4 relative">
         <label className="block text-white mb-2">Password</label>
-        <input
-          type="password"
-          name="password"
-          className="w-full p-3 border rounded-md text-black"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+        <div className="relative w-full">
+          <input
+            type={isPasswordVisible ? 'text' : 'password'} // Toggle input type
+            name="password"
+            className="w-full p-3 border rounded-md text-black pr-10"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          {/* Eye Icon for password */}
+          <span
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-button1"
+          >
+            <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
+          </span>
+        </div>
       </div>
 
       {/* Confirm Password */}
-      <div className="mb-4">
+      <div className="mb-4 relative">
         <label className="block text-white mb-2">Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          className="w-full p-3 border rounded-md text-black"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+        <div className="relative w-full">
+          <input
+            type={isConfirmPasswordVisible ? 'text' : 'password'} // Toggle input type
+            name="confirmPassword"
+            className="w-full p-3 border rounded-md text-black pr-10"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+          {/* Eye Icon for confirm password */}
+          <span
+            onClick={toggleConfirmPasswordVisibility}
+            className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-button1"
+          >
+            <FontAwesomeIcon icon={isConfirmPasswordVisible ? faEyeSlash : faEye} />
+          </span>
+        </div>
       </div>
 
       {/* Account Type Selection */}

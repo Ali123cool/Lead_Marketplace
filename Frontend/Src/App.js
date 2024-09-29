@@ -14,9 +14,12 @@ import Registration from './Pages/Registration';
 import CheckEmail from './Pages/CheckEmail';
 import EmailVerified from './Pages/EmailVerified';
 import ResetPassword from './Pages/ResetPassword';
+import ResetPassword2 from './Pages/ResetPassword2';
 import ResendVerification from './Pages/ResendVerification';
 import VendorDashboard from './Pages/VendorDashboard';
 import CustomerDashboard from './Pages/CustomerDashboard';
+import ChangeEmail from './Pages/ChangeEmail';
+import ChangePassword from './Pages/ChangePassword';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,17 +48,6 @@ function App() {
     fetchUser();
   }, []);
 
-  // Handle Account button routing
-  const handleAccountClick = () => {
-    if (!user) {
-      navigate('/login');
-    } else if (accountType === 'vendor') {
-      navigate('/vendor-dashboard');
-    } else if (accountType === 'customer') {
-      navigate('/customer-dashboard');
-    }
-  };
-
   // Handle logoff
   const handleLogoff = async () => {
     const { error } = await supabase.auth.signOut();
@@ -68,21 +60,39 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-primary text-bodyText">
-      <Global_Navbar handleAccountClick={handleAccountClick} handleLogoff={handleLogoff} />
+      <Global_Navbar user={user} accountType={accountType} handleLogoff={handleLogoff} />
       <main className="flex-grow">
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/email-verified" element={<EmailVerified />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password2" element={<ResetPassword2 />} />
           <Route path="/resend-verification" element={<ResendVerification />} />
 
-          {/* Conditional rendering for dashboards based on account type */}
-          <Route path="/vendor-dashboard" element={user && accountType === 'vendor' ? <VendorDashboard /> : <Login />} />
-          <Route path="/customer-dashboard" element={user && accountType === 'customer' ? <CustomerDashboard /> : <Login />} />
+          {/* Protected routes */}
+          <Route
+            path="/vendor-dashboard"
+            element={user && accountType === 'vendor' ? <VendorDashboard /> : <Login />}
+          />
+          <Route
+            path="/customer-dashboard"
+            element={user && accountType === 'customer' ? <CustomerDashboard /> : <Login />}
+          />
+          <Route
+            path="/change-email"
+            element={(user && accountType === 'customer') || (user && accountType === 'vendor')  ? <ChangeEmail /> : <Login />}
+          />
+          <Route
+            path="/change-password"
+            element={(user && accountType === 'customer') || (user && accountType === 'vendor')  ? <ChangePassword /> : <Login />}
+          />
+          
 
+          {/* Public routes */}
           <Route path="/contact-faq" element={<FAQ />} />
           <Route path="/terms-of-service" element={<TOS />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
