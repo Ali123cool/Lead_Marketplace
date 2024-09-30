@@ -15,6 +15,9 @@ const usStates = [
 ];
 
 const VendorDashboard_Profile = () => {
+  
+  const navigate = useNavigate();
+
   const [vendorData, setVendorData] = useState({
     first_name: '',
     last_name: '',

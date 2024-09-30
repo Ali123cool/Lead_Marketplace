@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@supabase/supabase-js": "^2.45.4",
     "autoprefixer": "^10.4.20",
     "lucide-react": "^0.446.0",

@@ -40,14 +40,16 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-primary text-bodyText">
-      <Global_Navbar handleAccountClick={handleAccountClick} handleLogoff={handleLogoff} />
+      <Global_Navbar user={user} accountType={accountType} handleLogoff={handleLogoff} />
       <main className="flex-grow">
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           <Route path="/email-verified" element={<EmailVerified />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password2" element={<ResetPassword2 />} />
           <Route path="/resend-verification" element={<ResendVerification />} />
 
           {/* Protected Routes for Vendor and Customer Dashboards */}
