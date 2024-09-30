@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+
+  /* Cards */
+
+  /* Larger Cards */
+  .card-1 {
+    @apply p-10 bg-primary text-text-primary rounded-lg drop-shadow-lg max-w-2xl mx-auto mb-12;
+  }
+  
+  .card-2 {
+    @apply p-10 bg-secondary text-text-primary rounded-lg drop-shadow-lg max-w-2xl mx-auto mb-12;
+  }
+  
+  .card-3 {
+    @apply p-10 bg-tertiary text-text-primary rounded-lg drop-shadow-lg max-w-2xl mx-auto mb-12;
+  }
+  
+  /* Smaller, Centered Cards */
+  .card-4 {
+    @apply p-6 bg-secondary text-text-primary rounded-md drop-shadow-lg max-w-lg mx-auto mb-12;
+  }
+  
+  .card-5 {
+    @apply p-6 bg-secondary text-text-secondary rounded-md drop-shadow-lg max-w-lg mx-auto mb-12;
+  }
+  
+  .card-6 {
+    @apply p-6 bg-secondary text-text-tertiary rounded-md drop-shadow-lg max-w-lg mx-auto mb-12;
+  }
+  
+
+  /* Buttons */
+  .btn-1 {
+    @apply bg-button-primary text-text-primary rounded-md px-4 py-2 transition-colors duration-300 hover:bg-opacity-80;
+  }
+  
+  .btn-2 {
+    @apply bg-button-secondary text-text-primary rounded-md px-6 py-3 transition-colors duration-300 hover:bg-opacity-80;
+  }
+  
+  .btn-3 {
+    @apply bg-transparent border-2 border-button-primary text-text-primary rounded-md px-4 py-2 transition-colors duration-300 hover:bg-button-primary hover:bg-opacity-20;
+  }
+  
+  .btn-4 {
+    @apply bg-transparent border-2 border-button-secondary text-text-primary rounded-md px-6 py-3 transition-colors duration-300 hover:bg-button-secondary hover:bg-opacity-20;
+  }
+  
+
+  /* Text Elements */
+  .logo-text {
+    @apply text-logo font-logo text-text-primary;
+  }
+  
+  .h1 {
+    @apply text-h1 font-header text-text-primary;
+  }
+  
+  .h2 {
+    @apply text-h2 font-header text-text-primary;
+  }
+  
+  .h3 {
+    @apply text-h3 font-header text-text-primary;
+  }
+  
+  .h4 {
+    @apply text-h4 font-header text-text-secondary;
+  }
+  
+  .body-primary {
+    @apply text-bodyPrimary font-body text-text-primary;
+  }
+  
+  .body-secondary {
+    @apply text-bodySecondary font-body text-text-secondary;
+  }
+  
+  .body-tertiary {
+    @apply text-bodySecondary font-body text-text-tertiary;
+  }
+  .fine-print {
+    @apply text-finePrint font-body text-text-tertiary;
+  }
+}

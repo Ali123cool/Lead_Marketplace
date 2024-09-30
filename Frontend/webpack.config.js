@@ -3,9 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './Src/index.js',
+  entry: './Src/index.js', // Ensure this path is correct
   output: {
-    path: path.resolve(__dirname, 'Dist'),
+    path: path.resolve(__dirname, 'dist'), // Use lowercase 'dist' if the folder is lowercase
     filename: 'bundle.js',
   },
   module: {
@@ -30,15 +30,15 @@ module.exports = {
       filename: '[name].bundle.css',
     }),
     new HtmlWebpackPlugin({
-      template: './Public/index.html',
+      template: './Public/index.html', // Ensure this path is correct
     }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   devServer: {
-    static: './Public',
+    static: path.join(__dirname, 'Public'), // Ensure this matches your actual folder
     hot: true,
-    historyApiFallback: true, // Ensure client-side routing works
+    historyApiFallback: true,
   },
 };

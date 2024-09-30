@@ -1,69 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { supabase } from './supabaseClient';
-import Global_Footer from './Components/Global_Footer'; 
-import Global_Navbar from './Components/Global_Navbar'; 
-import ErrorPage from './Pages/ErrorPage';
-import TOS from './Pages/TOS';
-import PrivacyPolicy from './Pages/PrivacyPolicy';
-import RefundPolicy from './Pages/RefundPolicy';
-import FAQ from './Pages/FAQ';
-import Home from './Pages/Home';
-import Login from './Pages/Login';
-import Registration from './Pages/Registration';
-import CheckEmail from './Pages/CheckEmail';
-import EmailVerified from './Pages/EmailVerified';
-import ResetPassword from './Pages/ResetPassword';
-import ResendVerification from './Pages/ResendVerification';
-import VendorDashboard from './Pages/VendorDashboard';
-import CustomerDashboard from './Pages/CustomerDashboard';
+import { AuthProvider, useAuth } from './Context/AuthContext'; 
+import Global_Footer from './Components/Layouts/Global_Footer'; 
+import Global_Navbar from './Components/Layouts/Global_Navbar'; 
+import ProtectedRoute from './ProtectedRoutes/ProtectedRoute'; 
+import TokenProtectedRoute from './ProtectedRoutes/TokenProtectedRoute';
+import ErrorPage from './Pages/General/ErrorPage';
+import TOS from './Pages/Policies/TOS';
+import PrivacyPolicy from './Pages/Policies/PrivacyPolicy';
+import RefundPolicy from './Pages/Policies/RefundPolicy';
+import FAQ from './Pages/General/FAQ';
+import Home from './Pages/General/Home';
+import Login from './Pages/Login_Registration/Login';
+import Registration from './Pages/Login_Registration/Registration';
+import EmailVerified from './Pages/Login_Registration/EmailVerified';
+import ResetPassword from './Pages/Login_Registration/ResetPassword';
+import ResendVerification from './Pages/Login_Registration/ResendVerification';
+import VendorDashboard from './Pages/Dashboards/VendorDashboard';
+import CustomerDashboard from './Pages/Dashboards/CustomerDashboard';
+import NewPassword from './Pages/Login_Registration/NewPassword'; // Import NewPassword component
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [accountType, setAccountType] = useState(null);
+  const { user, role, logout } = useAuth(); 
   const navigate = useNavigate();
 
-  // Fetch the session and account type
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-
-      if (session?.user) {
-        const { data, error } = await supabase
-          .from('users_meta')
-          .select('account_type')
-          .eq('id', session.user.id)
-          .single();
-
-        if (!error) {
-          setAccountType(data.account_type);
-        }
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  // Handle Account button routing
   const handleAccountClick = () => {
     if (!user) {
       navigate('/login');
-    } else if (accountType === 'vendor') {
+    } else if (role === 'vendor') {
       navigate('/vendor-dashboard');
-    } else if (accountType === 'customer') {
+    } else if (role === 'customer') {
       navigate('/customer-dashboard');
     }
   };
 
-  // Handle logoff
   const handleLogoff = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      setUser(null); // Clear user state
-      setAccountType(null); // Clear account type
-      navigate('/login'); // Redirect to login page
-    }
+    await logout(); 
   };
 
   return (
@@ -74,14 +46,23 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/email-verified" element={<EmailVerified />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/resend-verification" element={<ResendVerification />} />
 
-          {/* Conditional rendering for dashboards based on account type */}
-          <Route path="/vendor-dashboard" element={user && accountType === 'vendor' ? <VendorDashboard /> : <Login />} />
-          <Route path="/customer-dashboard" element={user && accountType === 'customer' ? <CustomerDashboard /> : <Login />} />
+          {/* Protected Routes for Vendor and Customer Dashboards */}
+          <Route element={<ProtectedRoute roleRequired="vendor" />}>
+            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+          </Route>
+
+          <Route element={<ProtectedRoute roleRequired="customer" />}>
+            <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+          </Route>
+
+          {/* Token-protected route for password reset */}
+          <Route element={<TokenProtectedRoute />}>
+            <Route path="/new-password" element={<NewPassword />} />
+          </Route>
 
           <Route path="/contact-faq" element={<FAQ />} />
           <Route path="/terms-of-service" element={<TOS />} />
@@ -90,10 +71,15 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>
-
       <Global_Footer />
     </div>
   );
 }
 
-export default App;
+export default function WrappedApp() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
