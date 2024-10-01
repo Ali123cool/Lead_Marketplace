@@ -17,6 +17,7 @@ const Registration = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);  // Track submission status
   const navigate = useNavigate();
 
   // Handle form input changes
@@ -40,6 +41,8 @@ const Registration = () => {
       return;
     }
 
+    setIsSubmitting(true);  // Disable the form while submitting
+
     try {
       // Use the helper function to handle registration
       const response = await registerUser(formData.email, formData.password, formData.accountType);
@@ -48,13 +51,14 @@ const Registration = () => {
         setSuccessMessage('Registration successful! Please check your email.');
         setTimeout(() => {
           navigate('/login'); // Redirect to login page
-        }, 10000);
+        }, 5000);
       } else {
-        throw new Error(); // Trigger the catch block for generic error
+        setErrorMessage(response.message);  // Show the generic error message
       }
     } catch (error) {
-      // Set a generic error message
-      setErrorMessage('Something went wrong.');
+      setErrorMessage('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);  // Re-enable the form
     }
   };
 
@@ -101,7 +105,7 @@ const Registration = () => {
             value={formData.accountType}
             onChange={handleInputChange}
           />
-          <FormButton text="Register" />
+          <FormButton text="Register" disabled={isSubmitting} />  {/* Disable when submitting */}
         </form>
 
         <div className="text-center mt-4">

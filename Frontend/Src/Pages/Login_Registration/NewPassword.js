@@ -1,42 +1,37 @@
-import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom'; // To capture the token from the URL
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { submitNewPassword } from '../../HelperFunctions/authSubmitNewPassword';
 import FormField from '../../Components/common/Form/FormField';
 import FormButton from '../../Components/common/Form/FormButton';
 import FormMessage from '../../Components/common/Form/FormMessage';
 import FormTitle from '../../Components/common/Form/FormTitle';
-import { submitNewPassword } from '../../HelperFunctions/authSubmitNewPassword';
 
 const NewPassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [searchParams] = useSearchParams(); // Hook to get the query params (the reset token)
+  const navigate = useNavigate();
 
-  // Extract the token from the URL
-  const token = searchParams.get('token');
+  useEffect(() => {
+    const hashFragment = window.location.hash;
+    if (hashFragment && hashFragment.includes('type=recovery')) {
+      console.log('Password recovery mode detected');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
-    setError('');
-
-    // Basic client-side validation
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError("Passwords don't match");
       return;
     }
 
-    if (!token) {
-      setError('Invalid or missing token.');
-      return;
-    }
-
-    // Call the helper function to submit the new password
-    const response = await submitNewPassword(token, newPassword);
+    const response = await submitNewPassword(newPassword);
 
     if (response.success) {
       setMessage(response.message);
+      setTimeout(() => navigate('/login'), 2000);
     } else {
       setError(response.message);
     }
@@ -45,13 +40,11 @@ const NewPassword = () => {
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center">
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
-        <FormTitle title="Reset Password" />
+        <FormTitle title="Set New Password" />
 
-        {/* Success or Error Messages */}
         {message && <FormMessage type="success" message={message} />}
         {error && <FormMessage type="error" message={error} />}
 
-        {/* New Password Form */}
         <form onSubmit={handleSubmit}>
           <FormField
             type="password"
@@ -67,7 +60,7 @@ const NewPassword = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <FormButton text="Reset Password" />
+          <FormButton text="Set New Password" />
         </form>
       </div>
     </div>

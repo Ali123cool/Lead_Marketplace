@@ -3,20 +3,17 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 
 const ProtectedRoute = ({ roleRequired }) => {
-  const { user, role, loading } = useAuth();
+  const { user, role } = useAuth();
 
-  if (loading) return <p>Loading...</p>; // Show a loader while checking auth state
-
-  // Redirect to login if the user is not logged in
-  if (!user) return <Navigate to="/login" />;
-
-  // Redirect if the user's role doesn't match the required role for the route
-  if (roleRequired && role !== roleRequired) {
-    return <Navigate to="/" />; // Redirect to home or an unauthorized page
+  if (!user) {
+    return <Navigate to="/login" />; // Redirect to login if not authenticated
   }
 
-  // If user is authenticated and has the right role, render the child components
-  return <Outlet />;
+  if (role !== roleRequired) {
+    return <Navigate to="/" />; // Redirect if the user role doesn't match
+  }
+
+  return <Outlet />; // Render the child routes
 };
 
 export default ProtectedRoute;

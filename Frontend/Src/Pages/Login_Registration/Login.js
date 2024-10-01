@@ -1,30 +1,39 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
 import FormField from '../../Components/common/Form/FormField';
 import FormButton from '../../Components/common/Form/FormButton';
 import FormCheckbox from '../../Components/common/Form/FormCheckbox';
-import FormTitle from '../../Components/common/Form/FormTitle'; 
+import FormTitle from '../../Components/common/Form/FormTitle';
 import FormMessageLink from '../../Components/common/Form/FormMessageLink';
-import FormMessage from '../../Components/common/Form/FormMessage'; // Importing FormMessage
-import { useAuth } from '../../Context/AuthContext'; // Use AuthContext
-import { useNavigate } from 'react-router-dom';
+import FormMessage from '../../Components/common/Form/FormMessage';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useAuth(); // Access login from AuthContext
+  const { login, loading, isEmailVerified, role } = useAuth();  // Access isEmailVerified and role from context
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
+    setErrorMessage('');  // Reset error message before login attempt
 
     try {
-      await login(email, password); // Use login function from AuthContext
-      navigate('/dashboard'); // Redirect to dashboard on success
+      await login(email, password);  // Perform login
+      
+      // Redirect based on the account type and email verification status
+      if (!isEmailVerified) {
+        navigate('/check-email');  // If email is not verified, redirect to check-email page
+      } else if (role === 'vendor') {
+        navigate('/vendor-dashboard');
+      } else if (role === 'customer') {
+        navigate('/customer-dashboard');
+      }
     } catch (error) {
-      setErrorMessage('Login failed: Incorrect email or password.');
+      console.error('Login error:', error);
+      setErrorMessage('Login failed: Incorrect email or password.');  // Display error if login fails
     }
   };
 
@@ -33,10 +42,8 @@ const Login = () => {
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Login" />
 
-        {/* Display the error message using FormMessage if it exists */}
-        {errorMessage && <FormMessage type="error" message={errorMessage} />}
+        {errorMessage && <FormMessage type="error" message={errorMessage} />}  {/* Display error message */}
 
-        {/* Login Form */}
         <form onSubmit={handleLogin}>
           <FormField
             type="email"
@@ -57,10 +64,9 @@ const Login = () => {
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
-          <FormButton text="Login" />
+          <FormButton text={loading ? "Logging in..." : "Login"} disabled={loading} />  {/* Disable button when loading */}
         </form>
 
-        {/* Login Links */}
         <div className="text-center mt-6">
           <FormMessageLink
             message="Don't have an account?"

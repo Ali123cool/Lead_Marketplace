@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv').config();  // Load environment variables from .env file
 
 module.exports = {
   entry: './Src/index.js', // Ensure this path is correct
@@ -32,6 +34,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './Public/index.html', // Ensure this path is correct
     }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.parsed)  // Inject environment variables
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -40,5 +45,6 @@ module.exports = {
     static: path.join(__dirname, 'Public'), // Ensure this matches your actual folder
     hot: true,
     historyApiFallback: true,
-  },
+    port: 3000 // Add this line to specify the port
+},
 };
