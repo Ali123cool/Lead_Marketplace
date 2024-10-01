@@ -10,11 +10,11 @@ import PrivacyPolicy from './Pages/Policies/PrivacyPolicy';
 import RefundPolicy from './Pages/Policies/RefundPolicy';
 import FAQ from './Pages/General/FAQ';
 import Home from './Pages/General/Home';
-import Login from './Pages/Login_Registration/Login';
-import Registration from './Pages/Login_Registration/Registration';
-import ResetPassword from './Pages/Login_Registration/ResetPassword';
-import NewPassword from './Pages/Login_Registration/NewPassword';
-import ResendVerification from './Pages/Login_Registration/ResendVerification';
+import Login from './Pages/Authentication/Login';
+import Registration from './Pages/Authentication/Registration';
+import ResetPassword from './Pages/Authentication/ResetPassword';
+import NewPassword from './Pages/Authentication/NewPassword';
+import ResendVerification from './Pages/Authentication/ResendVerification';
 import VendorDashboard from './Pages/Dashboards/VendorDashboard';
 import CustomerDashboard from './Pages/Dashboards/CustomerDashboard';
 

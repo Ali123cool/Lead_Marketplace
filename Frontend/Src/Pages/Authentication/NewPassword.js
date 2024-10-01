@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { submitNewPassword } from '../../HelperFunctions/authSubmitNewPassword';
+import { submitNewPassword } from '../../HelperFunctions/Authentication/AuthSubmitNewPassword';
 import FormField from '../../Components/common/Form/FormField';
 import FormButton from '../../Components/common/Form/FormButton';
 import FormMessage from '../../Components/common/Form/FormMessage';

@@ -6,7 +6,7 @@ import FormTitle from '../../Components/common/Form/FormTitle';
 import FormMessageLink from '../../Components/common/Form/FormMessageLink';
 import FormMessage from '../../Components/common/Form/FormMessage';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../../HelperFunctions/authRegistration';
+import { registerUser } from '../../HelperFunctions/Authentication/AuthRegistration';
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +51,7 @@ const Registration = () => {
         setSuccessMessage('Registration successful! Please check your email.');
         setTimeout(() => {
           navigate('/login'); // Redirect to login page
-        }, 5000);
+        }, 10000);
       } else {
         setErrorMessage(response.message);  // Show the generic error message
       }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authResetPassword } from '../../HelperFunctions/authResetPassword';
+import { authResetPassword } from '../../HelperFunctions/Authentication/AuthResetPassword';
 import FormField from '../../Components/common/Form/FormField';
 import FormButton from '../../Components/common/Form/FormButton';
 import FormMessage from '../../Components/common/Form/FormMessage';

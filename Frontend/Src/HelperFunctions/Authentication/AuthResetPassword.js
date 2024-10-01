@@ -1,4 +1,4 @@
-import { supabase } from '../Api/supabaseClient';
+import { supabase } from '../../Api/supabaseClient';
 
 export const authResetPassword = async (email) => {
   try {

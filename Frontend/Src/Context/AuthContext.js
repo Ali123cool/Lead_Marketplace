@@ -1,56 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'; 
 import { supabase } from '../Api/supabaseClient';
 
-// Create a context for the authentication logic
 const AuthContext = createContext();
 
-// AuthProvider component that wraps your app and provides authentication state
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);              // Stores the logged-in user
-  const [loading, setLoading] = useState(true);        // Tracks whether an auth action is loading
-  const [role, setRole] = useState(null);              // Stores the user's role (e.g., vendor, customer)
-  const [isEmailVerified, setIsEmailVerified] = useState(false);  // Tracks if the user's email is verified
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   // Login function using Supabase auth
   const login = async (email, password) => {
-    setLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      
-      if (error) {
-        throw new Error(error.message);  // Throw the error so the calling function can handle it
-      }
-  
-      if (!data.user) {
-        throw new Error('Login failed: No user data returned.');
-      }
-  
-      setUser(data.user);  // Store the logged-in user
-      setIsEmailVerified(!!data.user.email_confirmed_at);  // Check if email is verified
-      await fetchUserRole(data.user.id);  // Fetch the user's role
-      
-      return data.user;  // Optionally return the user object
-  
-    } catch (error) {
-      console.error('Login error: Ensure that your email and password are correct');
-      throw error;  // Re-throw the error to be caught in the component calling this function
-    } finally {
-      setLoading(false);  // Ensure loading stops after login attempt
-    }
-  };
+      if (error) throw new Error(error.message);
+      if (!data.user) throw new Error('Login failed: No user data returned.');
 
-  // Logout function using Supabase auth
-  const logout = async () => {
-    setLoading(true);
-    try {
-      await supabase.auth.signOut();
-      setUser(null);
-      setRole(null);
-      setIsEmailVerified(false);  // Clear user state on logout
+      setUser(data.user);  // Set user state
+      setIsEmailVerified(!!data.user.email_confirmed_at);  // Check email verification
+
+      // Fetch user's role
+      await fetchUserRole(data.user.id);
+
     } catch (error) {
-      console.error('Logout error:', error.message);
-    } finally {
-      setLoading(false);
+      console.error('Login error:', error.message);
+      throw error;
     }
   };
 
@@ -60,12 +33,24 @@ export const AuthProvider = ({ children }) => {
       const { data, error } = await supabase
         .from('users_meta')
         .select('account_type')
-        .eq('user_id', userId)
+        .eq('id', userId)  // Ensure 'id' matches your schema
         .single();
       if (error) throw error;
-      setRole(data?.account_type || null);  // Set the role if found
+      setRole(data.account_type || null);  // Set user's role
     } catch (error) {
       console.error('Error fetching user role:', error.message);
+    }
+  };
+
+  // Logout function using Supabase auth
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setRole(null);
+      setIsEmailVerified(false);
+    } catch (error) {
+      console.error('Logout error:', error.message);
     }
   };
 
@@ -76,13 +61,11 @@ export const AuthProvider = ({ children }) => {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           setUser(session.user);
-          setIsEmailVerified(!!session.user.email_confirmed_at);  // Check if email is verified
-          await fetchUserRole(session.user.id);  // Fetch the role if user is logged in
+          setIsEmailVerified(!!session.user.email_confirmed_at);
+          await fetchUserRole(session.user.id);
         }
       } catch (error) {
         console.error('Session check error:', error.message);
-      } finally {
-        setLoading(false);  // Stop loading once session is checked
       }
     };
 
@@ -90,28 +73,24 @@ export const AuthProvider = ({ children }) => {
 
     // Listen for auth state changes (login/logout)
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setLoading(true);
       if (session?.user) {
         setUser(session.user);
-        setIsEmailVerified(!!session.user.email_confirmed_at);  // Check if email is verified
-        await fetchUserRole(session.user.id);  // Fetch role on auth state change
+        setIsEmailVerified(!!session.user.email_confirmed_at);
+        await fetchUserRole(session.user.id);
       } else {
         setUser(null);
         setRole(null);
         setIsEmailVerified(false);
       }
-      setLoading(false);
     });
 
-    // Clean up the auth listener on unmount
     return () => {
       authListener.subscription.unsubscribe();
     };
   }, []);
 
-  // Return the provider with the state and functions for children components
   return (
-    <AuthContext.Provider value={{ user, role, isEmailVerified, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, role, isEmailVerified, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

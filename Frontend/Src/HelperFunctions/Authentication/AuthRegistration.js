@@ -1,4 +1,4 @@
-import { supabase } from '../Api/supabaseClient';
+import { supabase } from '../../Api/supabaseClient';
 
 // Function to handle user signup and metadata insertion
 export const registerUser = async (email, password, accountType) => {
@@ -40,25 +40,13 @@ export const registerUser = async (email, password, accountType) => {
         id: userId,
         email,
         account_type: accountType,
-        status: 'active',  // Add status as "active"
+        created_at: new Date().toISOString(), // Optional: ensure created_at is set to the current time
+        updated_at: new Date().toISOString(), // Optional: set updated_at to current time initially
       });
 
     if (metaError) {
       console.error('Metadata insertion error:', metaError.message); // Log the actual error
       throw new Error('Registration succeeded, but metadata insertion failed.');
-    }
-
-    // Step 4: Insert email into either 'customers' or 'vendors' table based on accountType
-    let insertionTable = accountType === 'customer' ? 'customers' : 'vendors';
-    const { error: tableInsertError } = await supabase
-      .from(insertionTable)
-      .insert({
-        email,
-      });
-
-    if (tableInsertError) {
-      console.error(`Error inserting into ${insertionTable}:`, tableInsertError.message); // Log actual error
-      throw new Error('Registration succeeded, but failed to associate the account with customer/vendor data.');
     }
 
     return { success: true, message: 'Registration successful. Please check your email to verify your account.' };

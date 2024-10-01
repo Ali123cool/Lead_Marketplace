@@ -4,7 +4,7 @@ import FormButton from '../../Components/common/Form/FormButton';
 import FormMessage from '../../Components/common/Form/FormMessage';
 import FormMessageLink from '../../Components/common/Form/FormMessageLink';
 import FormTitle from '../../Components/common/Form/FormTitle'; 
-import { resendVerificationEmail } from '../../HelperFunctions/authResendVerification'; // Importing the helper function
+import { resendVerificationEmail } from '../../HelperFunctions/Authentication/AuthResendVerification'; // Importing the helper function
 
 const ResendVerification = () => {
   const [email, setEmail] = useState('');
