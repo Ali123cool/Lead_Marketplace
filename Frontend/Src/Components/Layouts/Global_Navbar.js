@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../HelperFunctions/Context/AuthContext'; // Use the updated AuthContext for user and role
 
-const Global_Navbar = ({ user, accountType, handleLogoff }) => {
+const Global_Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // Hamburger menu state
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false); // Account dropdown state
+  const { user, role, logoff } = useAuth(); // Get user, role, and logoff from AuthContext
   const navigate = useNavigate(); // For navigating between pages
 
   // Toggle the hamburger menu for mobile view
@@ -19,7 +21,17 @@ const Global_Navbar = ({ user, accountType, handleLogoff }) => {
 
   // Handle Link Click and Navigate
   const handleLinkClick = (path) => {
-    navigate(path); // Navigate to the correct route
+    navigate(path); // Navigate to the specified route
+  };
+
+  // Handle user logoff
+  const handleLogoff = async () => {
+    try {
+      await logoff(); // Logoff user through AuthContext
+      navigate('/login'); // Navigate to login page after logoff
+    } catch (error) {
+      console.error('Logoff failed:', error.message);
+    }
   };
 
   return (
@@ -80,7 +92,7 @@ const Global_Navbar = ({ user, accountType, handleLogoff }) => {
                     <li>
                       <button
                         className="block px-4 py-2 hover:text-button-primary w-full text-left"
-                        onClick={() => handleLinkClick(accountType === 'vendor' ? '/vendor-dashboard' : '/customer-dashboard')}
+                        onClick={() => handleLinkClick(role === 'vendor' ? '/vendor-dashboard' : '/customer-dashboard')}
                       >
                         Dashboard
                       </button>
@@ -144,7 +156,7 @@ const Global_Navbar = ({ user, accountType, handleLogoff }) => {
                     <li>
                       <button
                         className="block px-4 py-2 hover:text-button-primary w-full text-left"
-                        onClick={() => handleLinkClick(accountType === 'vendor' ? '/vendor-dashboard' : '/customer-dashboard')}
+                        onClick={() => handleLinkClick(role === 'vendor' ? '/vendor-dashboard' : '/customer-dashboard')}
                       >
                         Dashboard
                       </button>

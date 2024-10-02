@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import FormField from '../../Components/common/Form/FormField';
-import FormButton from '../../Components/common/Form/FormButton';
-import FormMessage from '../../Components/common/Form/FormMessage';
-import FormMessageLink from '../../Components/common/Form/FormMessageLink';
-import FormTitle from '../../Components/common/Form/FormTitle'; 
+import FormField from '../../Components/Common/Form/FormField';
+import FormButton from '../../Components/Common/Form/FormButton';
+import FormMessage from '../../Components/Common/Form/FormMessage';
+import FormMessageLink from '../../Components/Common/Form/FormMessageLink';
+import FormTitle from '../../Components/Common/Form/FormTitle'; 
 import { resendVerificationEmail } from '../../HelperFunctions/Authentication/AuthResendVerification'; // Importing the helper function
 
 const ResendVerification = () => {
@@ -31,9 +31,9 @@ const ResendVerification = () => {
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Resend Verification" />
 
-        {/* Success or Error Messages */}
-        {message && <FormMessage type="success" message={message} />}
-        {error && <FormMessage type="error" message={error} />}
+        {/* Show only one message at a time */}
+        {message && !error && <FormMessage type="success" message={message} />}
+        {error && !message && <FormMessage type="error" message={error} />}
 
         {/* Resend Verification Form */}
         <form onSubmit={handleResendVerification}>

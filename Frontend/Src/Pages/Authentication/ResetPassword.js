@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { authResetPassword } from '../../HelperFunctions/Authentication/AuthResetPassword';
-import FormField from '../../Components/common/Form/FormField';
-import FormButton from '../../Components/common/Form/FormButton';
-import FormMessage from '../../Components/common/Form/FormMessage';
-import FormTitle from '../../Components/common/Form/FormTitle';
+import FormField from '../../Components/Common/Form/FormField';
+import FormButton from '../../Components/Common/Form/FormButton';
+import FormMessage from '../../Components/Common/Form/FormMessage';
+import FormTitle from '../../Components/Common/Form/FormTitle';
+import FormMessageLink from '../../Components/Common/Form/FormMessageLink'; // Import FormMessageLink
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -28,8 +29,11 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-primary flex items-center justify-center">
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Reset Password" />
-        {message && <FormMessage type="success" message={message} />}
-        {error && <FormMessage type="error" message={error} />}
+
+        {/* Show only one message at a time */}
+        {message && !error && <FormMessage type="success" message={message} />}
+        {error && !message && <FormMessage type="error" message={error} />}
+
         <form onSubmit={handleSubmit}>
           <FormField
             type="email"
@@ -40,6 +44,15 @@ const ResetPassword = () => {
           />
           <FormButton text="Send Reset Email" />
         </form>
+
+        {/* Use FormMessageLink for Back to Login */}
+        <div className="text-center mt-4">
+          <FormMessageLink 
+            message="Remembered your password?" 
+            linkText="Back to Login" 
+            linkTo="/login" 
+          />
+        </div>
       </div>
     </div>
   );

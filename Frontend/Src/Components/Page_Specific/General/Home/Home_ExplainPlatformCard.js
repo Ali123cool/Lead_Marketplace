@@ -1,7 +1,7 @@
 // Src/Components/Page_Specific/Home/Home_ExplainPlatformCard.js
 
 import React from 'react';
-import Card from '../../../common/Card';
+import Card from '../../../Common/UserInterface/Card';
 
 const Home_ExplainPlatformCard = () => {
   return (

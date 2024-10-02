@@ -1,19 +1,23 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../HelperFunctions/Context/AuthContext';
 
-const ProtectedRoute = ({ roleRequired }) => {
-  const { user, role } = useAuth();
+const ProtectedRoute = ({ children, roleRequired }) => {
+  const { user, role, loading } = useAuth(); // Get user, role, and loading from context
+  const location = useLocation();
 
+  // If the user is not logged in, redirect to the login page
   if (!user) {
-    return <Navigate to="/login" />; // Redirect to login if not authenticated
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (role !== roleRequired) {
-    return <Navigate to="/" />; // Redirect if the user role doesn't match
+  // If a specific role is required and the user's role doesn't match, redirect to a different page
+  if (roleRequired && role !== roleRequired) {
+    return <Navigate to="/" replace />;
   }
 
-  return <Outlet />; // Render the child routes
+  // Otherwise, render the protected content
+  return children;
 };
 
 export default ProtectedRoute;

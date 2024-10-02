@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import FormField from '../../Components/common/Form/FormField';
-import FormButton from '../../Components/common/Form/FormButton';
-import FormRadioGroup from '../../Components/common/Form/FormRadioGroup';
-import FormTitle from '../../Components/common/Form/FormTitle';
-import FormMessageLink from '../../Components/common/Form/FormMessageLink';
-import FormMessage from '../../Components/common/Form/FormMessage';
+import FormField from '../../Components/Common/Form/FormField';
+import FormButton from '../../Components/Common/Form/FormButton';
+import FormRadioGroup from '../../Components/Common/Form/FormRadioGroup';
+import FormTitle from '../../Components/Common/Form/FormTitle';
+import FormMessageLink from '../../Components/Common/Form/FormMessageLink';
+import FormMessage from '../../Components/Common/Form/FormMessage';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../HelperFunctions/Authentication/AuthRegistration';
 
@@ -15,8 +15,8 @@ const Registration = () => {
     confirmPassword: '',
     accountType: 'customer',
   });
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [error, seterror] = useState('');
+  const [message, setmessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);  // Track submission status
   const navigate = useNavigate();
 
@@ -32,12 +32,12 @@ const Registration = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+    seterror('');
+    setmessage('');
 
     // Basic client-side validation
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      seterror('Passwords do not match.');
       return;
     }
 
@@ -48,15 +48,15 @@ const Registration = () => {
       const response = await registerUser(formData.email, formData.password, formData.accountType);
 
       if (response.success) {
-        setSuccessMessage('Registration successful! Please check your email.');
+        setmessage('Registration successful! Please check your email.');
         setTimeout(() => {
           navigate('/login'); // Redirect to login page
         }, 10000);
       } else {
-        setErrorMessage(response.message);  // Show the generic error message
+        seterror(response.message);  // Show the generic error message
       }
     } catch (error) {
-      setErrorMessage('Something went wrong. Please try again later.');
+      seterror('Something went wrong. Please try again later.');
     } finally {
       setIsSubmitting(false);  // Re-enable the form
     }
@@ -67,8 +67,10 @@ const Registration = () => {
       <div className="container max-w-md mx-auto p-6 bg-tertiary rounded-md shadow-md">
         <FormTitle title="Register" />
 
-        {successMessage && <FormMessage type="success" message={successMessage} />}
-        {errorMessage && <FormMessage type="error" message={errorMessage} />}
+
+        {/* Show only one message at a time */}
+        {message && !error && <FormMessage type="success" message={message} />}
+        {error && !message && <FormMessage type="error" message={error} />}
 
         <form onSubmit={handleSubmit}>
           <FormField

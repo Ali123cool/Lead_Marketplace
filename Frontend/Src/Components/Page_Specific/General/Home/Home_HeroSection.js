@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../../../common/Button'; // Corrected import path
+import Button from '../../../Common/UserInterface/Button'; // Corrected import path
 
 const Home_HeroSection = () => {
   return (

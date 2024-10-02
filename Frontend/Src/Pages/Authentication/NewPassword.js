@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitNewPassword } from '../../HelperFunctions/Authentication/AuthSubmitNewPassword';
-import FormField from '../../Components/common/Form/FormField';
-import FormButton from '../../Components/common/Form/FormButton';
-import FormMessage from '../../Components/common/Form/FormMessage';
-import FormTitle from '../../Components/common/Form/FormTitle';
+import FormField from '../../Components/Common/Form/FormField';
+import FormButton from '../../Components/Common/Form/FormButton';
+import FormMessage from '../../Components/Common/Form/FormMessage';
+import FormTitle from '../../Components/Common/Form/FormTitle';
 
 const NewPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -13,22 +13,20 @@ const NewPassword = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const hashFragment = window.location.hash;
-    if (hashFragment && hashFragment.includes('type=recovery')) {
-      console.log('Password recovery mode detected');
-    }
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage(''); // Reset any existing messages
+    setError('');   // Reset any existing errors
+
     if (newPassword !== confirmPassword) {
       setError("Passwords don't match");
       return;
     }
 
+    // Call the function to reset the password
     const response = await submitNewPassword(newPassword);
 
+    // If a previous session is already active it will automatically redirect to the customer or vendor dashboard
     if (response.success) {
       setMessage(response.message);
       setTimeout(() => navigate('/login'), 2000);
@@ -42,8 +40,9 @@ const NewPassword = () => {
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Set New Password" />
 
-        {message && <FormMessage type="success" message={message} />}
-        {error && <FormMessage type="error" message={error} />}
+        {/* Show only one message at a time */}
+        {message && !error && <FormMessage type="success" message={message} />}
+        {error && !message && <FormMessage type="error" message={error} />}
 
         <form onSubmit={handleSubmit}>
           <FormField

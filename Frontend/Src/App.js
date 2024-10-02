@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useAuth } from './Context/AuthContext';  // Access authentication context
+import { AuthProvider, useAuth } from './HelperFunctions/Context/AuthContext';
 import Global_Footer from './Components/Layouts/Global_Footer';
 import Global_Navbar from './Components/Layouts/Global_Navbar';
 import ProtectedRoute from './ProtectedRoutes/ProtectedRoute';
@@ -17,12 +17,12 @@ import NewPassword from './Pages/Authentication/NewPassword';
 import ResendVerification from './Pages/Authentication/ResendVerification';
 import VendorDashboard from './Pages/Dashboards/VendorDashboard';
 import CustomerDashboard from './Pages/Dashboards/CustomerDashboard';
+import DashboardComponentShowcase from './Pages/DashboardComponentShowcase';
 
-function App() {
-  const { user, role, logout } = useAuth();  // Removed loading and isEmailVerified from AuthContext
+function AppContent() {
+  const { user, role, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Handle navigation based on account role
   const handleAccountClick = () => {
     if (!user) {
       navigate('/login');
@@ -33,7 +33,6 @@ function App() {
     }
   };
 
-  // Handle logoff asynchronously
   const handleLogoff = async () => {
     try {
       await logout();
@@ -42,11 +41,6 @@ function App() {
       console.error('Error during logoff:', error);
     }
   };
-
-  // Monitor app's state from AuthContext (No longer needed for loading)
-  useEffect(() => {
-    console.log('User role:', role);
-  }, [role]);
 
   return (
     <div className="flex flex-col min-h-screen bg-primary text-bodyText">
@@ -59,18 +53,28 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/resend-verification" element={<ResendVerification />} />
+          <Route path="/ds123" element={<DashboardComponentShowcase />} />
 
-          {/* Vendor Dashboard (Protected Route) */}
-          <Route element={<ProtectedRoute roleRequired="vendor" />}>
-            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-          </Route>
+        {/* Vendor Dashboard - Requires 'vendor' Role */}
+        <Route
+        path="/vendor-dashboard"
+        element={
+          <ProtectedRoute roleRequired="vendor">
+            <VendorDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-          {/* Customer Dashboard (Protected Route) */}
-          <Route element={<ProtectedRoute roleRequired="customer" />}>
-            <Route path="/customer-dashboard" element={<CustomerDashboard />} />
-          </Route>
+      {/* Customer Dashboard - Requires 'customer' Role */}
+      <Route
+        path="/customer-dashboard"
+        element={
+          <ProtectedRoute roleRequired="customer">
+            <CustomerDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-          {/* Other Routes */}
           <Route path="/contact-faq" element={<FAQ />} />
           <Route path="/terms-of-service" element={<TOS />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -80,6 +84,14 @@ function App() {
       </main>
       <Global_Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
