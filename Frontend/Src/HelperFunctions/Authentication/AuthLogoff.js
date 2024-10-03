@@ -1,4 +1,4 @@
-import { supabase } from '../../Api/supabaseClient'; // Supabase client
+import { supabase } from '../../Api/SupabaseClient'; // Supabase client
 
 // Function to log out the user and clear any frontend storage
 export const authLogoff = async () => {

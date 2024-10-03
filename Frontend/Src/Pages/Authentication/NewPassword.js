@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitNewPassword } from '../../HelperFunctions/Authentication/AuthSubmitNewPassword';
-import FormField from '../../Components/Common/Form/FormField';
-import FormButton from '../../Components/Common/Form/FormButton';
-import FormMessage from '../../Components/Common/Form/FormMessage';
-import FormTitle from '../../Components/Common/Form/FormTitle';
+import FormField from '../../Components/1_Common/Form/FormField';
+import FormButton from '../../Components/1_Common/Form/FormButton';
+import FormMessage from '../../Components/1_Common/Form/FormMessage';
+import FormTitle from '../../Components/1_Common/Form/FormTitle';
 
 const NewPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -36,7 +36,7 @@ const NewPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center">
+    <div className="min-h-screen bg-primary flex items-center justify-center -mt-8">
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Set New Password" />
 

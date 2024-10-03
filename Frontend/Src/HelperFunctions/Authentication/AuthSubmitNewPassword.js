@@ -1,4 +1,4 @@
-import { supabase } from '../../Api/supabaseClient';
+import { supabase } from '../../Api/SupabaseClient';
 
 export const submitNewPassword = async (newPassword) => {
   try {

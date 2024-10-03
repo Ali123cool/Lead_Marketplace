@@ -1,4 +1,4 @@
-import { supabase } from '../../Api/supabaseClient';
+import { supabase } from '../../Api/SupabaseClient';
 
 // Function to handle user signup and metadata insertion
 export const registerUser = async (email, password, accountType) => {

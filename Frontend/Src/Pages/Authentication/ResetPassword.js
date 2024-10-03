@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { authResetPassword } from '../../HelperFunctions/Authentication/AuthResetPassword';
-import FormField from '../../Components/Common/Form/FormField';
-import FormButton from '../../Components/Common/Form/FormButton';
-import FormMessage from '../../Components/Common/Form/FormMessage';
-import FormTitle from '../../Components/Common/Form/FormTitle';
-import FormMessageLink from '../../Components/Common/Form/FormMessageLink'; // Import FormMessageLink
+import FormField from '../../Components/1_Common/Form/FormField';
+import FormButton from '../../Components/1_Common/Form/FormButton';
+import FormMessage from '../../Components/1_Common/Form/FormMessage';
+import FormTitle from '../../Components/1_Common/Form/FormTitle';
+import FormMessageLink from '../../Components/1_Common/Form/FormMessageLink'; // Import FormMessageLink
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center">
+    <div className="min-h-screen bg-primary flex items-center justify-center -mt-8">
       <div className="bg-tertiary rounded-lg p-6 max-w-md w-full">
         <FormTitle title="Reset Password" />
 

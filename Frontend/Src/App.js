@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './HelperFunctions/Context/AuthContext';
-import Global_Footer from './Components/Layouts/Global_Footer';
-import Global_Navbar from './Components/Layouts/Global_Navbar';
-import ProtectedRoute from './ProtectedRoutes/ProtectedRoute';
-import ErrorPage from './Pages/General/ErrorPage';
-import TOS from './Pages/Policies/TOS';
-import PrivacyPolicy from './Pages/Policies/PrivacyPolicy';
-import RefundPolicy from './Pages/Policies/RefundPolicy';
+import { AuthProvider, useAuth } from './HelperFunctions/Authentication/AuthContext';
+import Global_Footer from './Components/4_Global/Footer';
+import Global_Navbar from './Components/4_Global/Navbar';
+import ProtectedRoute from './RouteProtection/ProtectedRoute';
+import ErrorPage from './Pages/Static/ErrorPage';
+import TOS from './Pages/Static/TOS';
+import PrivacyPolicy from './Pages/Static/PrivacyPolicy';
+import RefundPolicy from './Pages/Static/RefundPolicy';
 import FAQ from './Pages/General/FAQ';
 import Home from './Pages/General/Home';
 import Login from './Pages/Authentication/Login';
@@ -45,43 +45,30 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen bg-primary text-bodyText">
       <Global_Navbar handleAccountClick={handleAccountClick} handleLogoff={handleLogoff} />
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Registration />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/new-password" element={<NewPassword />} />
-          <Route path="/resend-verification" element={<ResendVerification />} />
-          <Route path="/ds123" element={<DashboardComponentShowcase />} />
+      <div className="pt-16 flex-grow flex items-center justify-center">
+        <main className="w-full">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/new-password" element={<NewPassword />} />
+            <Route path="/resend-verification" element={<ResendVerification />} />
+            <Route path="/ds123" element={<DashboardComponentShowcase />} />
+            <Route path="/contact-faq" element={<FAQ />} />
+            <Route path="/terms-of-service" element={<TOS />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+          
+            {/*Protected Routes */}
+            <Route path="/vendor-dashboard" element={ <ProtectedRoute roleRequired="vendor"> <VendorDashboard /> </ProtectedRoute>}/>
+            <Route path="/customer-dashboard" element={ <ProtectedRoute roleRequired="customer"> <CustomerDashboard /> </ProtectedRoute>}/>
 
-        {/* Vendor Dashboard - Requires 'vendor' Role */}
-        <Route
-        path="/vendor-dashboard"
-        element={
-          <ProtectedRoute roleRequired="vendor">
-            <VendorDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Customer Dashboard - Requires 'customer' Role */}
-      <Route
-        path="/customer-dashboard"
-        element={
-          <ProtectedRoute roleRequired="customer">
-            <CustomerDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-          <Route path="/contact-faq" element={<FAQ />} />
-          <Route path="/terms-of-service" element={<TOS />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </main>
+            {/*Error Page */}
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </main>
+      </div>
       <Global_Footer />
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import FAQ_FAQList from '../../Components/Page_Specific/General/FAQ/FAQ_FAQList';
-import FAQ_ContactInfo from '../../Components/Page_Specific/General/FAQ/FAQ_ContactInfo';
+import FAQ_FAQList from '../../Components/3_PageSpecificSections/General/FAQ/FAQ_FAQList';
+import FAQ_ContactInfo from '../../Components/3_PageSpecificSections/General/FAQ/FAQ_ContactInfo';
 
 const FAQ = () => {
   return (

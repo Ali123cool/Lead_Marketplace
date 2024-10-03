@@ -1,4 +1,4 @@
-import { supabase } from '../../Api/supabaseClient'; // Supabase client
+import { supabase } from '../../Api/SupabaseClient'; // Supabase client
 
 // Function to log in the user and fetch their role
 export const authLogin = async (email, password) => {
