@@ -18,6 +18,8 @@ import ResendVerification from './Pages/Authentication/ResendVerification';
 import VendorDashboard from './Pages/Dashboards/VendorDashboard';
 import CustomerDashboard from './Pages/Dashboards/CustomerDashboard';
 import DashboardComponentShowcase from './Pages/DashboardComponentShowcase';
+import ChangeEmail from './Pages/Authentication/ChangeEmailFromDashboard';
+import ResetPasswordFromVendorDashboard from './Pages/Authentication/ResetPasswordFromVendorDashboard';
 
 function AppContent() {
   const { user, role, logout } = useAuth();
@@ -63,7 +65,9 @@ function AppContent() {
             {/*Protected Routes */}
             <Route path="/vendor-dashboard" element={ <ProtectedRoute roleRequired="vendor"> <VendorDashboard /> </ProtectedRoute>}/>
             <Route path="/customer-dashboard" element={ <ProtectedRoute roleRequired="customer"> <CustomerDashboard /> </ProtectedRoute>}/>
-
+            <Route path="/vendor-dashboard/change-email" element={ <ProtectedRoute roleRequired="vendor"> <ChangeEmail /> </ProtectedRoute>}/>
+            <Route path="/vendor-dashboard/change-password" element={ <ProtectedRoute roleRequired="vendor"> <ResetPasswordFromVendorDashboard /> </ProtectedRoute> } />
+            
             {/*Error Page */}
             <Route path="*" element={<ErrorPage />} />
           </Routes>

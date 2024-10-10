@@ -22,18 +22,24 @@ export const registerUser = async (email, password, accountType) => {
     }
 
     // Step 2: Register the user using Supabase auth
-    const { data, error } = await supabase.auth.signUp({
+    const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    if (error) {
-      console.error('Registration error:', error.message); // Log the actual error for debugging
+    if (authError) {
+      console.error('Registration error:', authError.message); // Log the actual error for debugging
       throw new Error('Registration failed. Please try again.'); // Generic error message for users
     }
 
-    // Step 3: Insert user metadata into 'users_meta' table
-    const userId = data.user.id; // Get user ID from the response
+    // Step 3: Ensure user.id exists in the response before inserting into users_meta
+    const userId = authData?.user?.id;
+
+    if (!userId) {
+      throw new Error('User ID not available after sign-up.');
+    }
+
+    // Step 4: Insert user metadata into 'users_meta' table
     const { error: metaError } = await supabase
       .from('users_meta')
       .insert({
@@ -51,6 +57,7 @@ export const registerUser = async (email, password, accountType) => {
 
     return { success: true, message: 'Registration successful. Please check your email to verify your account.' };
   } catch (err) {
+    console.error('Error during registration:', err);
     return { success: false, message: err.message };
   }
 };

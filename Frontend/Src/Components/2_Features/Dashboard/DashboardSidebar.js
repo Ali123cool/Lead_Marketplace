@@ -1,8 +1,11 @@
+// Src/Components/common/Dashboards/DashboardSidebar.js
+
 import React, { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 const DashboardSidebar = ({ title = 'Menu', items }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  // Initialize the sidebar as closed
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -13,7 +16,9 @@ const DashboardSidebar = ({ title = 'Menu', items }) => {
         
         {/* Sidebar Header */}
         <div className="flex items-center justify-between pl-4 pr-4 pt-6">
-          <h2 className={`text-white text-2xl font-bold transition-all duration-300 ${!isOpen && 'hidden'}`}>{title}</h2>
+          <h2 className={`text-white text-2xl font-bold transition-all duration-300 ${!isOpen && 'hidden'}`}>
+            {title}
+          </h2>
           <button className="text-white" onClick={toggleSidebar}>
             <FaBars size={24} />
           </button>
@@ -28,13 +33,13 @@ const DashboardSidebar = ({ title = 'Menu', items }) => {
               onClick={item.onClick}
             >
               <span>{item.icon}</span>
-              <span className={`${!isOpen && 'hidden'} origin-left transition-all duration-300`}>{item.label}</span>
+              <span className={`${!isOpen && 'hidden'} origin-left transition-all duration-300`}>
+                {item.label}
+              </span>
             </div>
           ))}
         </nav>
       </div>
-
-     
     </div>
   );
 };

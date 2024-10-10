@@ -10,7 +10,6 @@ const VendorDashboard_Sidebar = ({ onTabSelect }) => {
     { label: 'Manage Leads', icon: <FaCog />, onClick: () => onTabSelect('manageLeads') },
     { label: 'Payouts', icon: <FaFileInvoiceDollar />, onClick: () => onTabSelect('payouts') },
     { label: 'Notifications', icon: <FaBell />, onClick: () => onTabSelect('notifications') },
-    { label: 'Support', icon: <FaQuestionCircle />, onClick: () => onTabSelect('support') },
   ];
 
   return <DashboardSidebar title="Vendor Dashboard" items={sidebarItems} />;

@@ -1,67 +1,121 @@
-// Src/Components/common/Dashboards/DashboardFileUpload.js
+// Src/Components/2_Features/Dashboard/DashboardFileUpload.js
 
-import React, { useState } from 'react';
+import React from 'react';
 
-const DashboardFileUpload = ({ onFileUpload }) => {
-  const [dragging, setDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-
+const DashboardFileUpload = ({ 
+  onFileUpload, 
+  selectedFiles, 
+  onFileDelete, 
+  customMessage = 'Drag and drop files here, or click to select files',
+  maxFiles = 1 // Default to 1 file per upload action
+}) => {
+  
   const handleDragOver = (e) => {
     e.preventDefault();
-    setDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setDragging(false);
+    // Optional: Add visual feedback for dragging
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    setDragging(false);
-    const file = e.dataTransfer.files[0];
-    setSelectedFile(file);
-    if (onFileUpload) {
-      onFileUpload(file);
+    let files = Array.from(e.dataTransfer.files);
+
+    // Enforce maxFiles limit based on current selected files
+    if (selectedFiles.length + files.length > maxFiles) {
+      const availableSlots = maxFiles - selectedFiles.length;
+      alert(`You can only upload up to ${maxFiles} file(s). Please delete some files before adding new ones.`);
+      files = files.slice(0, availableSlots);
+    }
+
+    // Removed PDF-only validation to allow all file types
+    const validFiles = files;
+    const invalidFiles = []; // No invalid files as all types are allowed
+
+    if (invalidFiles.length > 0) {
+      alert('Some files are not allowed.');
+    }
+
+    if (validFiles.length > 0) {
+      onFileUpload([...selectedFiles, ...validFiles]); // Append new valid files
     }
   };
 
   const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    if (onFileUpload) {
-      onFileUpload(file);
+    let files = Array.from(e.target.files);
+
+    // Enforce maxFiles limit based on current selected files
+    if (selectedFiles.length + files.length > maxFiles) {
+      const availableSlots = maxFiles - selectedFiles.length;
+      alert(`You can only upload up to ${maxFiles} file(s). Please delete some files before adding new ones.`);
+      files = files.slice(0, availableSlots);
+    }
+
+    // Removed PDF-only validation to allow all file types
+    const validFiles = files;
+    const invalidFiles = []; // No invalid files as all types are allowed
+
+    if (invalidFiles.length > 0) {
+      alert('Some files are not allowed.');
+    }
+
+    if (validFiles.length > 0) {
+      onFileUpload([...selectedFiles, ...validFiles]); // Append new valid files
     }
   };
 
   return (
     <div
-      className={`border-2 ${dragging ? 'border-button-primary' : 'border-dashed border-gray-400'} rounded-md p-6 text-center transition-colors duration-300`}
+      className={`border-2 border-dashed border-text-primary rounded-md p-6 text-center transition-colors duration-300`}
       onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {selectedFile ? (
-        <div className="text-white">
-          <p>{selectedFile.name}</p>
-          <p>{(selectedFile.size / 1024).toFixed(2)} KB</p>
+      {selectedFiles.length > 0 && (
+        <div className="mb-4">
+          <h4 className="text-lg font-semibold mb-2">Selected Files:</h4>
+          <ul className="space-y-2">
+            {selectedFiles.map((file, index) => (
+              <li key={index} className="flex items-center justify-between">
+                <div>
+                  {/* Removed URL.createObjectURL to prevent generating URLs for viewing files */}
+                  <span className="text-blue-500 underline">{file.name}</span>
+                  <span className="ml-2 text-sm text-primary">({(file.size / 1024).toFixed(2)} KB)</span>
+                </div>
+                <button
+                  onClick={() => onFileDelete(file.name)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
-      ) : (
-        <>
-          <p className="text-white mb-4">Drag and drop a file here, or click to select a file</p>
-          <input
-            type="file"
-            className="hidden"
-            onChange={handleFileSelect}
-            id="file-upload-input"
-          />
-          <label
-            htmlFor="file-upload-input"
-            className=" btn-4 cursor-pointer"
-          >
-            Choose File
-          </label>
-        </>
       )}
+
+      <div
+        className={`border-2 border-dashed border-text-primary rounded-md p-4 cursor-pointer`}
+      >
+        {/* Disable file input if maxFiles is reached */}
+        {selectedFiles.length < maxFiles ? (
+          <>
+            <p className="text-primary-600 mb-4">{customMessage}</p>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleFileSelect}
+              id="file-upload-input"
+              multiple={maxFiles > 1} // Allow selecting multiple files only if maxFiles > 1
+            />
+            <label
+              htmlFor="file-upload-input"
+              className="btn-2 cursor-pointer"
+            >
+              Choose File{maxFiles > 1 ? 's' : ''}
+            </label>
+          </>
+        ) : (
+          <p className="text-red-500">Maximum of {maxFiles} file(s) uploaded. Please delete a file to add a new one.</p>
+        )}
+      </div>
     </div>
   );
 };

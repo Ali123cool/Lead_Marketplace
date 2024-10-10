@@ -5,7 +5,7 @@ module.exports = {
       colors: {
         primary: '#011714',
         secondary: '#052326',
-        tertiary: '#252424',
+        tertiary: '#071f1d',
         button: {
           primary: '#085c31',
           secondary: '#06415c',
